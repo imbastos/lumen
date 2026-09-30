@@ -1,0 +1,31 @@
+.hero {
+    layout: grid;
+    grid-size: 2 1;
+    width: 100%;
+    height: 100%;
+}
+
+.hero_panel{
+    height: 100%;
+    padding: 2 4;
+    width: 1fr;
+}
+
+#intro_panel{
+    background: $panel;
+}
+
+#auth_panel{
+    align: center middle;
+}
+
+#auth_panel Static{
+    align-horizontal: center;
+    text-align: center;
+}
+
+#auth_panel Button{
+    margin: 1 8;
+    padding: 0 4;
+    width: 100%;
+}

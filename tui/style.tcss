@@ -1,0 +1,7 @@
+#error_message {
+  color: $error;
+}
+
+Input{
+  margin: 1 0;
+}
