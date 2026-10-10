@@ -1,11 +1,16 @@
-RIASEC_PROFILES = {
-    "R": "Realistic",
-    "I": "Investigative",
-    "A": "Artistic",
-    "S": "Social",
-    "E": "Enterprising",
-    "C": "Conventional", }
+#
 
+#
+RIASEC_PROFILES = {
+     "R": "Realista",
+    "I": "Investigativo",
+    "A": "Artístico",
+    "S": "Social",
+    "E": "Empreendedor",
+    "C": "Convencional",
+}
+
+#
 SCALE_OPTIONS = [
     {"value": 1, "label": "Discordo totalmente"},
     {"value": 2, "label": "Discordo"},
@@ -14,6 +19,7 @@ SCALE_OPTIONS = [
     {"value": 5, "label": "Concordo totalmente"},
 ]
 
+#
 QUESTIONS = [
     {
         "id": "Q01",
@@ -94,21 +100,21 @@ QUESTIONS = [
     {
         "id": "Q12",
         "text": (
-            "Gosto de trabalhar em atividades na qual possa orientar e ajudar pessoas."
+            "Gosto de trabalhar em atividades nais quais possa orientar e ajudar pessoas."
         ),
         "profile": "S",
     },
     {
         "id": "Q13",
         "text": (
-            "Em um trabalho em grupo, Costumo tomar a iniciativa e liderar o grupo."
+            "Em um trabalho em grupo, costumo tomar a iniciativa e liderar o grupo."
         ),
         "profile": "E",
     },
     {
         "id": "Q14",
         "text": (
-            "Quando estou em um ambiente polarizado, me sinto à vontade para apresentar suas ideias e defender seu ponto de vista."
+            "Quando estou em um ambiente polarizado, me sinto à vontade para apresentar minhas ideias e defender meu ponto de vista."
         ),
         "profile": "E",
     },
@@ -130,7 +136,6 @@ QUESTIONS = [
         "id": "Q17",
         "text": (
             "Tenho paciência para verificar erros nas informações."
-            "para identificar possíveis erros."
         ),
         "profile": "C",
     },
@@ -143,6 +148,7 @@ QUESTIONS = [
     },
 ]
 
+#
 AREA_QUESTION = {
     "id": "I01",
     "text": "Qual área do conhecimento mais lhe atrai?",
@@ -181,3 +187,62 @@ AREA_QUESTION = {
         },
     ],
 }
+
+#
+def unanswered_questions(responses):
+    unanswered = []
+    for question_review in QUESTIONS:
+        answer_found = responses.get(question_review["id"])
+        if (
+            not isinstance(answer_found, int) 
+            or answer_found < 1 
+            or answer_found > 5
+        ):
+             unanswered.append(question_review["id"])
+
+    return unanswered
+
+def valid_area_interest(area_interest):
+    valid_areas = []
+    for option in AREA_QUESTION["options"]:
+        valid_areas.append(option["value"])
+
+    return area_interest in valid_areas
+
+def calculate_profile_scores(responses):
+    pending_questions = unanswered_questions(responses)
+
+    if pending_questions:
+        raise ValueError("Verifique as questões sem resposta válida: " + ", ".join(pending_questions)
+        )
+
+    scores = {
+        profile: 0
+        for profile in RIASEC_PROFILES
+    }
+
+    for question in QUESTIONS:
+        answer = responses[question["id"]]
+        profile = question["profile"]
+
+        scores[profile] += answer
+
+    return scores
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
