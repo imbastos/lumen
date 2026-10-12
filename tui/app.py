@@ -5,6 +5,7 @@ from tui.screens.dashboard import DashboardScreen
 from tui.screens.home import HomeScreen
 from tui.screens.signin import SigninScreen
 from tui.screens.signup import SignupScreen
+from tui.screens.vocational import VocationalScreen
 
 
 class TextualApp(App):
@@ -14,12 +15,13 @@ class TextualApp(App):
             "signup": SignupScreen,
             "signin": SigninScreen,
             "dashboard": DashboardScreen,
+            "vocational": VocationalScreen,
         }
         self.user_session = None
         super().__init__(**kwargs)
 
     def on_mount(self):
-        self.push_screen("home")
+        self.push_screen("vocational") # TODO: voltar para 'home'
 
     def set_session(self, user: User):
         self.user_session = user
