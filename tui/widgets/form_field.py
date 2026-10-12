@@ -1,0 +1,55 @@
+from collections.abc import Iterable
+
+from textual import on
+from textual.containers import Container
+from textual.validation import Validator
+from textual.widgets import Input, Static
+
+
+class FormField(Container):
+    DEFAULT_CSS = """
+      FormField{
+        height: auto;
+        layout: vertical;
+      }
+      FormField .error{
+        color: $error;
+        max-height: 1;
+        padding-left: 1;
+      }
+    """
+
+    def __init__(
+        self,
+        id: str,
+        placeholder: str,
+        validators: Validator | Iterable[Validator],
+        **kwargs,
+    ):
+        self.placeholder = placeholder
+        self.validators = validators
+        super().__init__(id=id, **kwargs)
+
+    def compose(self):
+        yield Input(placeholder=self.placeholder, validators=self.validators)
+        yield Static(classes="error")
+
+    def is_valid(self):
+        input = self.query_one(Input)
+        return input.is_valid and bool(input.value.strip())
+
+    @on(Input.Changed)
+    def show_invalid_reason(self, event: Input.Changed):
+        error: Static = self.query_one(".error")
+        failure_descriptions = event.validation_result.failure_descriptions
+        if failure_descriptions:
+            error_message = (
+                "* Esse campo possui " + " e ".join(failure_descriptions) + "."
+            )
+            error.update(error_message)
+        else:
+            error.update("")
+
+    @property
+    def value(self):
+        return self.query_one(Input).value
