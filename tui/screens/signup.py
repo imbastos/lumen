@@ -21,6 +21,10 @@ class SignupScreen(Screen):
             footer="Já possuo conta",
             submit_message="Criar conta",
             on_footer_pressed=lambda: self.app.navigate("signin"),
+
+            menu_message="Voltar ao menu",
+            on_menu_pressed=lambda: self.app.navigate("home"),
+            
             fields=[
                 FormField(
                     id="name",

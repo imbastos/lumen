@@ -47,6 +47,8 @@ class Form(Container):
         submit_message: str = "Confirmar",
         footer: str | None = None,
         on_footer_pressed: Callable[[], None] | None = None,
+        menu_message: str | None = None,
+        on_menu_pressed: Callable[[], None] | None = None,
         **kwargs,
     ):
         self.filled = False
@@ -54,9 +56,10 @@ class Form(Container):
         self.title = title
         self.footer = footer
         self.on_submit = on_submit
-        self.on_submit = on_submit
         self.submit_message = submit_message
         self.on_footer_pressed = on_footer_pressed
+        self.menu_message = menu_message
+        self.on_menu_pressed = on_menu_pressed
         super().__init__(**kwargs)
 
     def compose(self):
@@ -65,6 +68,8 @@ class Form(Container):
         yield Button(self.submit_message, disabled=True, id="submit")
         if self.footer:
             yield Button(self.footer, id="footer")
+        if self.menu_message:
+            yield Button(self.menu_message, id="menu")
 
     def on_mount(self):
         self.update_submit_state()
@@ -84,5 +89,11 @@ class Form(Container):
         self.on_submit(self)
 
     @on(Button.Pressed, "#footer")
-    def on_footer_pressed(self, event: Button.Pressed):
-        self.on_footer_pressed()
+    def on_footer_button_pressed(self, event: Button.Pressed):
+        if self.on_footer_pressed:
+            self.on_footer_pressed()
+
+    @on(Button.Pressed, "#menu")
+    def on_menu_button_pressed(self, event: Button.Pressed):
+        if self.on_menu_pressed:
+            self.on_menu_pressed()

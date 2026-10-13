@@ -5,6 +5,7 @@ from tui.screens.dashboard import DashboardScreen
 from tui.screens.home import HomeScreen
 from tui.screens.signin import SigninScreen
 from tui.screens.signup import SignupScreen
+from tui.screens.vocational import VocationalScreen
 
 
 class TextualApp(App):
@@ -14,6 +15,7 @@ class TextualApp(App):
             "signup": SignupScreen,
             "signin": SigninScreen,
             "dashboard": DashboardScreen,
+            "vocational": VocationalScreen,
         }
         self.user_session = None
         super().__init__(**kwargs)
@@ -26,7 +28,6 @@ class TextualApp(App):
 
     def navigate(self, route: str):
         PUBLIC_ROUTES = ["home", "signup", "signin"]
-        
         if route in PUBLIC_ROUTES or self.user_session:
             self.switch_screen(route)
         else:
