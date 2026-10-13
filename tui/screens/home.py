@@ -3,7 +3,6 @@ from textual import on
 from textual.containers import Center, Container
 from textual.screen import Screen
 from textual.widgets import Button, Static
-from textwrap import dedent
 
 
 class HomeScreen(Screen):
@@ -73,7 +72,7 @@ class HomeScreen(Screen):
     def compose(self):
         with Container(id="home_container"):
             yield Static(
-    r"""
+                r"""
     ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ ⣠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣸⣿⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⣿⣿⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
@@ -87,8 +86,8 @@ class HomeScreen(Screen):
 ⠀⠀⠀⠀⠀⢠⣿⣿⠿⠋⠁⠀⠀⠀⠀⠉⠳⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⡿⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
                 """,
-    id="star",
-)
+                id="star",
+            )
 
             yield Static(
                 figlet_format("LUMEN", font="standard"),
@@ -113,7 +112,7 @@ class HomeScreen(Screen):
                     "Cadastrar",
                     id="authenticate_signup",
                     variant="primary",
-                    )
+                )
 
             yield Static(
                 "Já é cadastrado? Faça login:",
