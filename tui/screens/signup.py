@@ -1,7 +1,7 @@
 import sqlite3
 
 from textual.screen import Screen
-from textual.validation import Function, Length
+from textual.validation import Length, Regex
 
 from tui.widgets.form import Form
 from tui.widgets.form_field import FormField
@@ -21,10 +21,8 @@ class SignupScreen(Screen):
             footer="Já possuo conta",
             submit_message="Criar conta",
             on_footer_pressed=lambda: self.app.navigate("signin"),
-
             menu_message="Voltar ao menu",
             on_menu_pressed=lambda: self.app.navigate("home"),
-            
             fields=[
                 FormField(
                     id="name",
@@ -41,15 +39,16 @@ class SignupScreen(Screen):
                     id="email",
                     placeholder="E-mail",
                     validators=[
-                        Function(
-                            lambda value: "@" in value and "." in value.split("@")[-1],
-                            failure_description="e-mail inválido",
+                        Regex(
+                            r"(?i)^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$",
+                            failure_description="formato inválido",
                         ),
                     ],
                 ),
                 FormField(
                     id="password",
                     placeholder="Senha",
+                    password=True,
                     validators=[
                         Length(
                             minimum=8,
@@ -70,7 +69,11 @@ class SignupScreen(Screen):
             user = signup(name=name, email=email, password=password)
             if user:
                 self.app.notify("Conta criada com sucesso.")
+                self.app.set_session(user)
+                self.app.navigate("dashboard")
             else:
                 self.app.notify("Não foi possível criar a sua conta.", severity="error")
         except sqlite3.IntegrityError:
             self.app.notify("Esse e-mail já está sendo utilizado", severity="error")
+        except sqlite3.OperationalError:
+            self.app.notify("Limite de requisições atingido", severity="error")

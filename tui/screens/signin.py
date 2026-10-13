@@ -1,5 +1,5 @@
 from textual.screen import Screen
-from textual.validation import Function, Length
+from textual.validation import Length, Regex
 
 from tui.widgets.form import Form
 from tui.widgets.form_field import FormField
@@ -19,24 +19,23 @@ class SigninScreen(Screen):
             footer="Não possuo conta",
             submit_message="Entrar",
             on_footer_pressed=lambda: self.app.navigate("signup"),
-
             menu_message="Voltar ao menu",
             on_menu_pressed=lambda: self.app.navigate("home"),
-         
             fields=[
                 FormField(
                     id="email",
                     placeholder="E-mail",
                     validators=[
-                        Function(
-                            lambda value: "@" in value and "." in value.split("@")[-1],
-                            failure_description="e-mail inválido",
+                        Regex(
+                            r"(?i)^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$",
+                            failure_description="formato inválido",
                         ),
                     ],
                 ),
                 FormField(
                     id="password",
                     placeholder="Senha",
+                    password=True,
                     validators=[
                         Length(
                             minimum=8,

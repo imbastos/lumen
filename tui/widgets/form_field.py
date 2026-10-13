@@ -24,14 +24,20 @@ class FormField(Container):
         id: str,
         placeholder: str,
         validators: Validator | Iterable[Validator],
+        password: bool = False,
         **kwargs,
     ):
+        self.password = password
         self.placeholder = placeholder
         self.validators = validators
         super().__init__(id=id, **kwargs)
 
     def compose(self):
-        yield Input(placeholder=self.placeholder, validators=self.validators)
+        yield Input(
+            placeholder=self.placeholder,
+            validators=self.validators,
+            password=self.password,
+        )
         yield Static(classes="error")
 
     def is_valid(self):
