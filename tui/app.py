@@ -6,6 +6,7 @@ from tui.screens.home import HomeScreen
 from tui.screens.signin import SigninScreen
 from tui.screens.signup import SignupScreen
 from tui.screens.vocational import VocationalScreen
+from tui.theme import lumen_theme
 
 
 class TextualApp(App):
@@ -21,6 +22,9 @@ class TextualApp(App):
         super().__init__(**kwargs)
 
     def on_mount(self):
+        self.register_theme(lumen_theme)
+        self.theme = "lumen"
+
         self.push_screen("home")
 
     def set_session(self, user: User):

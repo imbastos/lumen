@@ -23,7 +23,7 @@ class HomeScreen(Screen):
             width: 100%;
             height: auto;
             text-align: center;
-            color: #FACC15;
+            color: $secondary;
             margin: 0;
             padding: 0;
         }
@@ -32,7 +32,7 @@ class HomeScreen(Screen):
             width: 100%;
             height: auto;
             text-align: center;
-            color: #A78BFA;
+            color: $primary;
             margin-top: 0;
         }
 
@@ -51,8 +51,6 @@ class HomeScreen(Screen):
 
         #authenticate_signup {
             width: 24;
-            background: #7651A8;
-            color: #FFFFFF;
             margin-bottom: 2;
         }
 
@@ -64,8 +62,6 @@ class HomeScreen(Screen):
 
         #authenticate_login {
             width: 24;
-            background: #7651A8;
-            color: #FFFFFF;
         }
     """
 
