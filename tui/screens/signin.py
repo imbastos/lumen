@@ -19,6 +19,10 @@ class SigninScreen(Screen):
             footer="Não possuo conta",
             submit_message="Entrar",
             on_footer_pressed=lambda: self.app.navigate("signup"),
+
+            menu_message="Voltar ao menu",
+            on_menu_pressed=lambda: self.app.navigate("home"),
+         
             fields=[
                 FormField(
                     id="email",

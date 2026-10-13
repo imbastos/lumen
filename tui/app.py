@@ -21,14 +21,13 @@ class TextualApp(App):
         super().__init__(**kwargs)
 
     def on_mount(self):
-        self.push_screen("vocational") # TODO: voltar para 'home'
+        self.push_screen("home")
 
     def set_session(self, user: User):
         self.user_session = user
 
     def navigate(self, route: str):
         PUBLIC_ROUTES = ["home", "signup", "signin"]
-        
         if route in PUBLIC_ROUTES or self.user_session:
             self.switch_screen(route)
         else:
