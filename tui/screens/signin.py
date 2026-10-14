@@ -1,63 +1,40 @@
+from textual import on
 from textual.screen import Screen
-from textual.validation import Length, Regex
+from textual.widgets import Button
 
-from tui.widgets.form import Form
-from tui.widgets.form_field import FormField
+from exceptions.auth import AuthError
+from tui.forms.auth_fields import email_field, password_field
+from tui.widgets.form.form import Form
+from tui.widgets.navigate.back_button import BackButton
 from usecases.user import signin
 
 
 class SigninScreen(Screen):
-    DEFAULT_CSS = """
-      SigninScreen {
-          align: center middle;
-      }
-    """
-
     def compose(self):
+        signup_button = Button("Não possuo uma conta", id="signup_button")
+
+        yield BackButton()
         yield Form(
-            title="Entrar",
-            footer="Não possuo conta",
+            title="Fazer Login",
+            footer=[signup_button],
             submit_message="Entrar",
-            on_footer_pressed=lambda: self.app.navigate("signup"),
-            menu_message="Voltar ao menu",
-            on_menu_pressed=lambda: self.app.navigate("home"),
-            fields=[
-                FormField(
-                    id="email",
-                    placeholder="E-mail",
-                    validators=[
-                        Regex(
-                            r"(?i)^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$",
-                            failure_description="formato inválido",
-                        ),
-                    ],
-                ),
-                FormField(
-                    id="password",
-                    placeholder="Senha",
-                    password=True,
-                    validators=[
-                        Length(
-                            minimum=8,
-                            failure_description="mínimo de 8 caracteres",
-                        ),
-                    ],
-                ),
-            ],
+            fields=[email_field(), password_field()],
             on_submit=self.handle_signin,
         )
 
-    def handle_signin(self, form: Form):
-        email = form.query_one("#email").value
-        password = form.query_one("#password").value
+    def handle_signin(self, values: dict):
+        email = values["email"]
+        password = values["password"]
 
         try:
             user = signin(email=email, password=password)
-            if user:
-                self.app.notify("Acesso autorizado.")
-                self.app.set_session(user)
-                self.app.navigate("dashboard")
-            else:
-                self.app.notify("Credenciais inválidas.", severity="error")
-        except ValueError:
-            self.app.notify("Esse e-mail não está cadastrado.", severity="error")
+            self.app.set_current_user(user)
+            self.app.notify("Acesso autorizado.")
+
+            self.app.navigate("dashboard")
+        except AuthError as e:
+            self.app.notify(e.message, severity="error")
+
+    @on(Button.Pressed, "#signup_button")
+    def on_signup_button(self):
+        self.app.navigate("signup")

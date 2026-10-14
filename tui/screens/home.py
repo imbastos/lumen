@@ -1,131 +1,81 @@
+from pathlib import Path
+
 from pyfiglet import figlet_format
 from textual import on
-from textual.containers import Center, Container
+from textual.containers import (
+    Center,
+    Container,
+    Horizontal,
+    Middle,
+    Vertical,
+    VerticalScroll,
+)
 from textual.screen import Screen
-from textual.widgets import Button, Static
+from textual.widgets import Button, Label
 
 
 class HomeScreen(Screen):
     DEFAULT_CSS = """
-        HomeScreen {
-            align: center middle;
-        }
-
-        #home_container {
-            width: 90%;
-            height: auto;
-            border: round $surface;
-            padding: 1 3;
-            align: center middle;
-        }
-
-        #star {
-            width: 100%;
-            height: auto;
-            text-align: center;
-            color: $secondary;
-            margin: 0;
-            padding: 0;
-        }
-
-        #title {
-            width: 100%;
-            height: auto;
-            text-align: center;
-            color: $primary;
-            margin-top: 0;
-        }
-
-        #description {
-            width: 100%;
-            height: auto;
-            text-align: center;
-            margin: 0 0 2 0;
-        }
-
-        #signup_prompt {
-            width: 100%;
-            text-align: center;
-            margin-bottom: 1;
-        }
-
-        #authenticate_signup {
-            width: 24;
-            margin-bottom: 2;
-        }
-
-        #login_prompt {
-            width: 100%;
-            text-align: center;
-            margin-bottom: 1;
-        }
-
-        #authenticate_login {
-            width: 24;
-        }
+    #star{
+        text-align: center;
+        width: 1fr;
+    }
+    
+    .title{
+        margin-top: 8;
+        offset-y: -7;
+    }
+    
+    Middle{
+        max-height: 15;
+    }
     """
 
     def compose(self):
-        with Container(id="home_container"):
-            yield Static(
-                r"""
-    ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ ⣠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣸⣿⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⣿⣿⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣴⣿⡏⣿⣿⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠤⣤⣤⣤⣤⣤⣤⣤⣤⣿⣿⠇⠀⢿⣿⣷⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⡶⠶⠶⠶⠶⠶⠶⠶⠶⠖⠒⠒⠒⠒⠒⠒⠒⠂⠀⠀⠀⠀
-⠀⠀⠘⢿⣿⣿⣟⠛⠛⠛⠛⠀⠀⠀⠛⠛⠛⠛⠋⠉⠉⠉⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠈⠛⣿⣿⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⢹⣿⡿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⣾⣿⠁⢀⣤⣾⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⣸⣿⢇⣶⣿⠟⠙⠻⣿⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⢠⣿⣿⠿⠋⠁⠀⠀⠀⠀⠉⠳⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⡿⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-                """,
-                id="star",
-            )
+        star_path = Path(__file__).resolve().parents[1] / "assets" / "stars.txt"
 
-            yield Static(
-                figlet_format("LUMEN", font="standard"),
-                id="title",
-            )
+        star_art = star_path.read_text(encoding="utf-8").strip("\n")
 
-            yield Static(
-                "Estudante, seu caminho para a universidade "
-                "começa aqui!\n"
-                "Explore cursos, descubra suas afinidades "
-                "e planeje seu futuro acadêmico.",
-                id="description",
-            )
+        yield Container(
+            Middle(
+                Label(f"[$secondary]{star_art}", id="star"),
+                Label(f"[$primary]{figlet_format('Lumen')}", classes="title"),
+            ),
+            VerticalScroll(
+                Center(
+                    Label(
+                        "Estudante, seu caminho para a universidade começa [bold $secondary]aqui![/bold $secondary]"
+                    ),
+                    Label(
+                        "[$foreground-muted]Explore cursos, descubra suas afinidades e planeje seu futuro acadêmico."
+                    ),
+                ),
+                Horizontal(
+                    Vertical(
+                        Center(
+                            Label("[$foreground-muted]Não possuo cadastro"),
+                            Button(
+                                variant="primary",
+                                label="Crie sua conta",
+                                id="signup_button",
+                            ),
+                        )
+                    ),
+                    Vertical(
+                        Center(
+                            Label("[$foreground-muted]Já tenho uma conta"),
+                            Button(label="Entrar", id="signin_button"),
+                        )
+                    ),
+                ),
+            ),
+            classes="box",
+        )
 
-            yield Static(
-                "Não possui cadastro? Crie sua conta:",
-                id="signup_prompt",
-            )
-
-            with Center():
-                yield Button(
-                    "Cadastrar",
-                    id="authenticate_signup",
-                    variant="primary",
-                )
-
-            yield Static(
-                "Já é cadastrado? Faça login:",
-                id="login_prompt",
-            )
-
-            with Center():
-                yield Button(
-                    "Login",
-                    id="authenticate_login",
-                    variant="primary",
-                )
-
-    @on(Button.Pressed, "#authenticate_signup")
+    @on(Button.Pressed, "#signup_button")
     def on_authenticate_signup(self, event: Button.Pressed):
         self.app.navigate("signup")
 
-    @on(Button.Pressed, "#authenticate_login")
+    @on(Button.Pressed, "#signin_button")
     def on_authenticate_login(self, event: Button.Pressed):
         self.app.navigate("signin")

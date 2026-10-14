@@ -1,0 +1,78 @@
+Screen {
+  align: center middle;
+}
+
+Center{
+  width: 1fr;
+}
+
+Center Static{
+  text-align: center;
+}
+
+.box {
+  border: round $surface;
+  grid-gutter: 1;
+  height: auto;
+  layout: grid;
+  padding: 2;
+  width: 0.4fr;
+}
+
+.box Static,
+.box Label{
+  text-align: center;
+}
+
+.box Container,
+.box VerticalScroll,
+.box Vertical,
+.box Horizontal,
+.box Middle {
+  height: auto;
+}
+
+.box VerticalScroll{
+  max-height: 25;
+}
+
+.box VerticalScroll .submit{
+  dock: bottom;
+}
+
+.box Button {
+  width: 1fr;
+  margin-left: 1;
+  margin-right: 1;
+}
+
+Label{
+  margin-bottom: 1;
+  margin-top: 1;
+  width: 1fr;
+}
+
+Label.title {
+  text-align: center;
+  margin-top: 1;
+  margin-bottom: 2;
+  width: 1fr;
+}
+
+Static.error {
+  color: $error;
+  margin-bottom: 1;
+  max-height: 1;
+  padding-left: 1;
+}
+
+.h_auto {
+  height: auto;
+}
+
+BackButton{
+  max-width: 5;
+  max-height: 3;
+  position: absolute;
+  offset-x: 1;
+}

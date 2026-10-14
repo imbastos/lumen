@@ -1,24 +1,12 @@
 from collections.abc import Iterable
 
 from textual import on
-from textual.containers import Container
+from textual.containers import Vertical
 from textual.validation import Validator
 from textual.widgets import Input, Static
 
 
-class FormField(Container):
-    DEFAULT_CSS = """
-      FormField{
-        height: auto;
-        layout: vertical;
-      }
-      FormField .error{
-        color: $error;
-        max-height: 1;
-        padding-left: 1;
-      }
-    """
-
+class FormField(Vertical):
     def __init__(
         self,
         id: str,
@@ -30,7 +18,7 @@ class FormField(Container):
         self.password = password
         self.placeholder = placeholder
         self.validators = validators
-        super().__init__(id=id, **kwargs)
+        super().__init__(classes="h_auto", id=id, **kwargs)
 
     def compose(self):
         yield Input(
@@ -48,6 +36,7 @@ class FormField(Container):
     def show_invalid_reason(self, event: Input.Changed):
         error: Static = self.query_one(".error")
         failure_descriptions = event.validation_result.failure_descriptions
+
         if failure_descriptions:
             error_message = (
                 "* Esse campo possui " + " e ".join(failure_descriptions) + "."

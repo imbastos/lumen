@@ -13,8 +13,8 @@ class ScaleButton(Container):
         }
     """
 
-    not_filled = ".--.\n|    |\n`--´"
-    filled = ".aa.\n|@@@@|\n`aa´"
+    NOT_FILLED = ".--.\n|    |\n`--´"
+    FILLED = ".aa.\n|@@@@|\n`aa´"
 
     def __init__(self, index: int, **kwargs):
         self.index = index
@@ -23,12 +23,9 @@ class ScaleButton(Container):
         super().__init__(**kwargs)
 
     def compose(self):
-        yield Static(self.not_filled, classes=f"index-{self.index}")
+        yield Static(self.NOT_FILLED, classes=f"index-{self.index}")
 
-    def _set_color(self, color):
-        self.query_one(Static).styles.color = color
-
-    def on_click(self, event):
+    def on_click(self):
         buttons = self.parent.query(ScaleButton)
         for button in buttons:
             if button.state == True:
@@ -40,8 +37,8 @@ class ScaleButton(Container):
 
     def enable(self):
         self.state = True
-        self.query_one(Static).update(self.filled)
+        self.query_one(Static).update(self.FILLED)
 
     def disable(self):
         self.state = False
-        self.query_one(Static).update(self.not_filled)
+        self.query_one(Static).update(self.NOT_FILLED)

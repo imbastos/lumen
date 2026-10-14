@@ -1,79 +1,41 @@
-import sqlite3
-
+from textual import on
 from textual.screen import Screen
-from textual.validation import Length, Regex
+from textual.widgets import Button
 
-from tui.widgets.form import Form
-from tui.widgets.form_field import FormField
+from exceptions.auth import AuthError
+from tui.forms.auth_fields import email_field, name_field, password_field
+from tui.widgets.form.form import Form
+from tui.widgets.navigate.back_button import BackButton
 from usecases.user import signup
 
 
 class SignupScreen(Screen):
-    DEFAULT_CSS = """
-      SignupScreen {
-          align: center middle;
-      }
-    """
-
     def compose(self):
+        signin_button = Button("Já possuo uma conta", id="signin_button")
+
+        yield BackButton()
         yield Form(
-            title="Criar conta",
-            footer="Já possuo conta",
+            title="Cadastro de Usuário",
+            footer=[signin_button],
             submit_message="Criar conta",
-            on_footer_pressed=lambda: self.app.navigate("signin"),
-            menu_message="Voltar ao menu",
-            on_menu_pressed=lambda: self.app.navigate("home"),
-            fields=[
-                FormField(
-                    id="name",
-                    placeholder="Nome",
-                    validators=[
-                        Length(
-                            minimum=3,
-                            maximum=64,
-                            failure_description="tamanho inválido",
-                        ),
-                    ],
-                ),
-                FormField(
-                    id="email",
-                    placeholder="E-mail",
-                    validators=[
-                        Regex(
-                            r"(?i)^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$",
-                            failure_description="formato inválido",
-                        ),
-                    ],
-                ),
-                FormField(
-                    id="password",
-                    placeholder="Senha",
-                    password=True,
-                    validators=[
-                        Length(
-                            minimum=8,
-                            failure_description="mínimo de 8 caracteres",
-                        ),
-                    ],
-                ),
-            ],
+            fields=[name_field(), email_field(), password_field()],
             on_submit=self.handle_signup,
         )
 
-    def handle_signup(self, form: Form):
-        name = form.query_one("#name").value
-        email = form.query_one("#email").value
-        password = form.query_one("#password").value
+    def handle_signup(self, values: dict):
+        name = values["name"]
+        email = values["email"]
+        password = values["password"]
 
         try:
             user = signup(name=name, email=email, password=password)
-            if user:
-                self.app.notify("Conta criada com sucesso.")
-                self.app.set_session(user)
-                self.app.navigate("dashboard")
-            else:
-                self.app.notify("Não foi possível criar a sua conta.", severity="error")
-        except sqlite3.IntegrityError:
-            self.app.notify("Esse e-mail já está sendo utilizado", severity="error")
-        except sqlite3.OperationalError:
-            self.app.notify("Limite de requisições atingido", severity="error")
+            self.app.set_current_user(user)
+            self.app.notify("Conta criada com sucesso.")
+
+            self.app.navigate("dashboard")
+        except AuthError as e:
+            self.app.notify(e.message, severity="error")
+
+    @on(Button.Pressed, "#signin_button")
+    def on_signin_button(self):
+        self.app.navigate("signin")

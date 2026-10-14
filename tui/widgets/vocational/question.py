@@ -1,17 +1,11 @@
 from textual.containers import Container, Horizontal
-from textual.widgets import Static
+from textual.widgets import Label
 
 from models.riasec_question import RiasecQuestion
-from tui.widgets.scale_button import ScaleButton
+from tui.widgets.vocational.scale_button import ScaleButton
 
 
 class VocationalQuestion(Container):
-    DEFAULT_CSS = """
-      VocationalQuestion Horizontal{
-        margin-top: 1;
-      }
-    """
-
     def __init__(self, riasec_question: RiasecQuestion, **kwargs):
         self.riasec_question = riasec_question
         self.score: int | None = None
@@ -21,7 +15,7 @@ class VocationalQuestion(Container):
         self.score = score
 
     def compose(self):
-        yield Static(self.riasec_question.text, id="text")
+        yield Label(self.riasec_question.text, id="text")
         yield Horizontal(
             *[
                 ScaleButton(
