@@ -1,5 +1,6 @@
 Screen {
   align: center middle;
+  overflow: hidden;
 }
 
 Center{
@@ -75,4 +76,8 @@ BackButton{
   max-height: 3;
   position: absolute;
   offset-x: 1;
+}
+
+.hidden{
+  display: none;
 }

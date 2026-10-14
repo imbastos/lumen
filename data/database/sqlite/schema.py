@@ -12,3 +12,21 @@ def initialize_database() -> None:
                 hashed_password TEXT NOT NULL
             );
         """)
+
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS riasec_results (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER NOT NULL,
+                r INTEGER NOT NULL,
+                i INTEGER NOT NULL,
+                a INTEGER NOT NULL,
+                s INTEGER NOT NULL,
+                e INTEGER NOT NULL,
+                c INTEGER NOT NULL,
+                created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+                FOREIGN KEY (user_id)
+                    REFERENCES users(id)
+                    ON DELETE CASCADE
+            );
+        """)

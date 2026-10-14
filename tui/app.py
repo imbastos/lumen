@@ -5,7 +5,7 @@ from tui.screens.dashboard import DashboardScreen
 from tui.screens.home import HomeScreen
 from tui.screens.signin import SigninScreen
 from tui.screens.signup import SignupScreen
-from tui.screens.vocational import VocationalScreen
+from tui.screens.vocational.vocational import VocationalScreen
 from tui.theme import lumen_theme
 
 
@@ -19,7 +19,9 @@ class TextualApp(App):
             "dashboard": DashboardScreen,
             "vocational": VocationalScreen,
         }
-        self.current_user = User(email="isaac.bastos@ufrpe.br", hashed_password="", id=1, name="isaac")
+        self.current_user = User(
+            email="isaac.bastos@ufrpe.br", hashed_password="", id=1, name="isaac"
+        )
         super().__init__(**kwargs)
 
     def on_mount(self):

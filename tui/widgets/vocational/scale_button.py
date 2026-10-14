@@ -33,7 +33,7 @@ class ScaleButton(Container):
 
         self.enable()
         self.parent.parent.set_score(self.index)
-        self.screen.update_submit_state()
+        self.screen.query_one("#vocational_test").update_submit_state()
 
     def enable(self):
         self.state = True
