@@ -5,7 +5,9 @@ from textual.screen import Screen
 from textual.widgets import Button, Label
 
 from data.database.sqlite.users import update_newsletter_subscription
+from exceptions.newsletter import UserNotFoundByIdError
 from models.user import User
+from smtp.send_email import send_confirmation
 
 
 class DashboardScreen(Screen):
@@ -66,19 +68,24 @@ class DashboardScreen(Screen):
 
         subscribed = not user.newsletter_subscribed
 
-        update_newsletter_subscription(
-            user_id=user.id,
-            subscribed=subscribed,
-        )
+        try:
+            update_newsletter_subscription(
+                user_id=user.id,
+                subscribed=subscribed,
+            )
 
-        user.newsletter_subscribed = subscribed
+            self.app.notify("Obrigado por assinar nossa Newsletter!")
+            user.newsletter_subscribed = subscribed
 
-        if subscribed:
-            button.label = "❌ Cancelar a Newsletter"
-            button.variant = "error"
-        else:
-            button.label = "📰 Assinar a Newsletter"
-            button.variant = "primary"
+            if subscribed:
+                button.label = "❌ Cancelar a Newsletter"
+                button.variant = "error"
+                send_confirmation(email=user.email)
+            else:
+                button.label = "📰 Assinar a Newsletter"
+                button.variant = "primary"
+        except UserNotFoundByIdError as e:
+            self.app.notify(e.message, severity="error")
 
     @on(Button.Pressed, "#logout")
     def on_logout(self):

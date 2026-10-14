@@ -6,9 +6,9 @@ from models.user import User
 
 def signup(name: str, email: str, password: str) -> User:
     user = User(name, email, utils.hash_password(password))
-    db.users.create(user)
+    res = db.users.create(user)
 
-    return user
+    return res
 
 
 def signin(email: str, password: str) -> User:

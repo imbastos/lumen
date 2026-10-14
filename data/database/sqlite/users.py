@@ -15,6 +15,15 @@ def create(user: User):
 
         cursor.execute(query, (user.name, user.email, user.hashed_password))
         conn.commit()
+
+        return User(
+            id=cursor.lastrowid,
+            name=user.name,
+            email=user.email,
+            hashed_password=user.hashed_password,
+            newsletter_subscribed=False,
+        )
+
     except sqlite3.IntegrityError as e:
         raise EmailAlreadyInUseError() from e
     except sqlite3.Error as e:
