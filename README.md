@@ -25,9 +25,9 @@ Nesta seção, são apresentados os requisitos funcionais e não funcionais defi
 | ID | Requisito funcional | Prioridade |
 |---|---|---|
 | **RF01** | Permitir o registro de informações pessoais e de escolaridade do usuário. | <span style="color: oklch(63.7% 0.237 25.331)">Alta</span> |
-| **RF02** | Disponibilizar um teste vocacional que indique as áreas de maior afinidade do estudante. | <span style="color: oklch(63.7% 0.237 25.331)">Alta</span> |
-| **RF03** | Disponibilizar um guia com informações sobre cursos e universidades. | <span style="color: oklch(79.5% 0.184 86.047)">Média</span> |
-| **RF04** | Disponibilizar informações sobre as regras da Lei de Cotas aplicáveis ao ensino superior. | <span style="color: oklch(79.5% 0.184 86.047)">Média</span> |
+| **RF02** | Oferecer interface gráfica (TUÍ) com a biblioteca textual | <span style="color: oklch(63.7% 0.237 25.331)">Alta</span> |
+| **RF03** | Disponibilizar um teste vocacional que indique as áreas de maior afinidade do estudante. | <span style="color: oklch(79.5% 0.184 86.047)">Média</span> |
+| **RF04** | Calcular perfil do usuário de acordo com os perfis do modelo RIASEC | <span style="color: oklch(79.5% 0.184 86.047)">Média</span> |
 | **RF05** | Disponibilizar um cronograma de estudos para auxiliar o estudante na organização de sua rotina acadêmica. | <span style="color: oklch(69.6% 0.17 162.48)">Baixa</span> |
 
 | ID | Requisito não funcional | Prioridade |
@@ -36,7 +36,7 @@ Nesta seção, são apresentados os requisitos funcionais e não funcionais defi
 | **RNF02** | O sistema deve garantir a proteção e a confidencialidade dos dados pessoais fornecidos pelos usuários. | <span style="color: oklch(63.7% 0.237 25.331)">Alta</span> |
 | **RNF03** | Interface simples e intuitiva, permitindo que o estudante navegue pelas funcionalidades sem necessidade de treinamento prévio. | <span style="color: oklch(79.5% 0.184 86.047)">Média</span> |
 | **RNF04** | O sistema deve possuir mecanismos de acessibilidade que permitam sua utilização pelo maior número possível de estudantes. | <span style="color: oklch(79.5% 0.184 86.047)">Média</span> |
-| **RNF05** | O sistema deve possuir estrutura modular, facilitando a manutenção e a implementação de novas funcionalidades. | <span style="color: oklch(79.5% 0.184 86.047)">Média</span> |
+| **RNF05** | Oferecer newsletter como API | <span style="color: oklch(79.5% 0.184 86.047)">Média</span> |
 
 ## 💜 Usos
 
