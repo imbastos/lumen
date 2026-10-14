@@ -9,7 +9,7 @@ class VocationalQuestion(Container):
     def __init__(self, riasec_question: RiasecQuestion, **kwargs):
         self.riasec_question = riasec_question
         self.score: int | None = None
-        super().__init__(**kwargs)
+        super().__init__(classes=f"profile-{riasec_question.profile.name.lower()}",**kwargs)
 
     def set_score(self, score):
         self.score = score
