@@ -4,6 +4,9 @@ from textual.containers import Center, Container, Vertical
 from textual.screen import Screen
 from textual.widgets import Button, Label
 
+from data.database.sqlite.users import update_newsletter_subscription
+from models.user import User
+
 
 class DashboardScreen(Screen):
     def compose(self):
@@ -29,9 +32,17 @@ class DashboardScreen(Screen):
                     variant="primary",
                 ),
                 Label(
-                    "Faça o teste vocacional e descubra seus "
-                    "principais perfis de interesse.",
-                    id="vocational_description",
+                    "Faça o teste vocacional e descubra seus principais perfis de interesse.",
+                ),
+            ),
+            Vertical(
+                Button(
+                    "📰 Assinar a Newsletter",
+                    id="newsletter_button",
+                    variant="primary",
+                ),
+                Label(
+                    "Receba conteúdos exclusivos direto na sua caixa de entrada.",
                 ),
             ),
             Button("🔒 Guia de cursos", disabled=True),
@@ -44,6 +55,30 @@ class DashboardScreen(Screen):
     @on(Button.Pressed, "#vocational_button")
     def on_vocational(self):
         self.app.navigate("vocational")
+
+    @on(Button.Pressed, "#newsletter_button")
+    def on_newsletter(self, event: Button.Pressed):
+        self.update_newsletter_button()
+
+    def update_newsletter_button(self):
+        user: User = self.app.current_user
+        button = self.query_one("#newsletter_button", Button)
+
+        subscribed = not user.newsletter_subscribed
+
+        update_newsletter_subscription(
+            user_id=user.id,
+            subscribed=subscribed,
+        )
+
+        user.newsletter_subscribed = subscribed
+
+        if subscribed:
+            button.label = "❌ Cancelar a Newsletter"
+            button.variant = "error"
+        else:
+            button.label = "📰 Assinar a Newsletter"
+            button.variant = "primary"
 
     @on(Button.Pressed, "#logout")
     def on_logout(self):

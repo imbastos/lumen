@@ -6,4 +6,5 @@ class User:
     name: str
     email: str
     hashed_password: str
-    id: str | None = None
+    newsletter_subscribed: bool = False
+    id: int | None = None

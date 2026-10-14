@@ -19,16 +19,14 @@ class TextualApp(App):
             "dashboard": DashboardScreen,
             "vocational": VocationalScreen,
         }
-        self.current_user = User(
-            email="isaac.bastos@ufrpe.br", hashed_password="", id=1, name="isaac"
-        )
+        self.current_user = None
         super().__init__(**kwargs)
 
     def on_mount(self):
         self.register_theme(lumen_theme)
         self.theme = "lumen"
 
-        self.push_screen("dashboard")
+        self.push_screen("home")
 
     def set_current_user(self, user: User):
         self.current_user = user

@@ -9,7 +9,9 @@ def initialize_database() -> None:
                 name TEXT NOT NULL CHECK(length(name) <= 32),
                 email TEXT NOT NULL UNIQUE
                     CHECK(length(email) <= 64),
-                hashed_password TEXT NOT NULL
+                hashed_password TEXT NOT NULL,
+                newsletter_subscribed INTEGER NOT NULL DEFAULT 0
+                    CHECK(newsletter_subscribed IN (0, 1))
             );
         """)
 

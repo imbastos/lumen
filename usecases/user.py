@@ -18,3 +18,7 @@ def signin(email: str, password: str) -> User:
         return found_user
     else:
         raise InvalidPasswordError()
+
+
+def update_newsletter_subscription(user_id: int, subscribed: bool):
+    db.users.update_newsletter_subscription(user_id=user_id, subscribed=subscribed)
