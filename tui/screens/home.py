@@ -1,9 +1,9 @@
 from pyfiglet import figlet_format
 from textual import on
-from textual.containers import Center, Container
+from textual.containers import Center, Container, VerticalScroll
 from textual.screen import Screen
 from textual.widgets import Button, Static
-
+from pathlib import Path
 
 class HomeScreen(Screen):
     DEFAULT_CSS = """
@@ -12,11 +12,16 @@ class HomeScreen(Screen):
         }
 
         #home_container {
-            width: 90%;
-            height: auto;
             border: round $surface;
-            padding: 1 3;
+            height: 90%;
+            width: 0.4fr;
+            padding: 1 0;
             align: center middle;
+        }
+
+        #home_scroll {
+            width: 100%;
+            height: 1fr;
         }
 
         #star {
@@ -66,61 +71,63 @@ class HomeScreen(Screen):
     """
 
     def compose(self):
+
+        star_path = (
+            Path(__file__).resolve().parents[1]
+            / "assets"
+            / "stars.txt"
+        )
+
+        star_art = star_path.read_text(
+            encoding="utf-8"
+        ).strip("\n")
+
         with Container(id="home_container"):
-            yield Static(
-                r"""
-    ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ ⣠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣸⣿⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⣿⣿⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣴⣿⡏⣿⣿⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠤⣤⣤⣤⣤⣤⣤⣤⣤⣿⣿⠇⠀⢿⣿⣷⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⡶⠶⠶⠶⠶⠶⠶⠶⠶⠖⠒⠒⠒⠒⠒⠒⠒⠂⠀⠀⠀⠀
-⠀⠀⠘⢿⣿⣿⣟⠛⠛⠛⠛⠀⠀⠀⠛⠛⠛⠛⠋⠉⠉⠉⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠈⠛⣿⣿⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⢹⣿⡿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⣾⣿⠁⢀⣤⣾⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⣸⣿⢇⣶⣿⠟⠙⠻⣿⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⢠⣿⣿⠿⠋⠁⠀⠀⠀⠀⠉⠳⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⡿⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-                """,
-                id="star",
-            )
 
-            yield Static(
-                figlet_format("LUMEN", font="standard"),
-                id="title",
-            )
+            # Coloca todos os componentes dentro da área rolável.
+            with VerticalScroll(id="home_scroll"):
 
-            yield Static(
-                "Estudante, seu caminho para a universidade "
-                "começa aqui!\n"
-                "Explore cursos, descubra suas afinidades "
-                "e planeje seu futuro acadêmico.",
-                id="description",
-            )
-
-            yield Static(
-                "Não possui cadastro? Crie sua conta:",
-                id="signup_prompt",
-            )
-
-            with Center():
-                yield Button(
-                    "Cadastrar",
-                    id="authenticate_signup",
-                    variant="primary",
+                yield Static(
+                    star_art,
+                    id="star",
                 )
 
-            yield Static(
-                "Já é cadastrado? Faça login:",
-                id="login_prompt",
-            )
-
-            with Center():
-                yield Button(
-                    "Login",
-                    id="authenticate_login",
-                    variant="primary",
+                yield Static(
+                    figlet_format("LUMEN", font="standard"),
+                    id="title",
                 )
+
+                yield Static(
+                    "Estudante, seu caminho para a universidade "
+                    "começa aqui!\n"
+                    "Explore cursos, descubra suas afinidades "
+                    "e planeje seu futuro acadêmico.",
+                    id="description",
+                )
+
+                yield Static(
+                    "Não possui cadastro? Crie sua conta:",
+                    id="signup_prompt",
+                )
+
+                with Center():
+                    yield Button(
+                        "Cadastrar",
+                        id="authenticate_signup",
+                        variant="primary",
+                    )
+
+                yield Static(
+                    "Já é cadastrado? Faça login:",
+                    id="login_prompt",
+                )
+
+                with Center():
+                    yield Button(
+                        "Login",
+                        id="authenticate_login",
+                        variant="primary",
+                    )
 
     @on(Button.Pressed, "#authenticate_signup")
     def on_authenticate_signup(self, event: Button.Pressed):
